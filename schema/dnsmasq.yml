@@ -1,0 +1,29 @@
+---
+# see https://docs.opnsense.org/development/api/core/dnsmasq.html
+name: dnsmasq
+reconfigureEndpoint: "/dnsmasq/service/reconfigure"
+resources:
+  - name: Host
+    filename: host
+    monad: host
+    endpoints:
+      add: "/dnsmasq/settings/add_host"
+      get: "/dnsmasq/settings/get_host"
+      update: "/dnsmasq/settings/set_host"
+      delete: "/dnsmasq/settings/del_host"
+    attrs:
+      - name: IpAddress
+        type: string
+        key: ip
+      - name: HwAddress
+        type: string
+        key: hwaddr
+      - name: Hostname
+        type: string
+        key: host
+      - name: Domain
+        type: string
+        key: domain
+      - name: Description
+        type: string
+        key: descr
