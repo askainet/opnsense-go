@@ -13,10 +13,10 @@ resources:
       delete: "/dnsmasq/settings/del_host"
     attrs:
       - name: IpAddress
-        type: string
+        type: SelectedMapList
         key: ip
       - name: HwAddress
-        type: string
+        type: SelectedMapList
         key: hwaddr
       - name: Hostname
         type: string

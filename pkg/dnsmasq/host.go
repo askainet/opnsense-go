@@ -19,11 +19,11 @@ var HostOpts = api.ReqOpts{
 // Data structs
 
 type Host struct {
-	IpAddress   string `json:"ip"`
-	HwAddress   string `json:"hwaddr"`
-	Hostname    string `json:"host"`
-	Domain      string `json:"domain"`
-	Description string `json:"descr"`
+	IpAddress   api.SelectedMapList `json:"ip"`
+	HwAddress   api.SelectedMapList `json:"hwaddr"`
+	Hostname    string              `json:"host"`
+	Domain      string              `json:"domain"`
+	Description string              `json:"descr"`
 }
 
 // CRUD operations

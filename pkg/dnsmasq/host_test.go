@@ -8,6 +8,18 @@ import (
 	"github.com/browningluke/opnsense-go/pkg/api"
 )
 
+func sliceEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
 func TestHost(t *testing.T) {
 	opnsense_url := os.Getenv("OPNSENSE_URI")
 	opnsense_key := os.Getenv("OPNSENSE_API_KEY")
@@ -29,9 +41,15 @@ func TestHost(t *testing.T) {
 		Api: api_client,
 	}
 
+	ip_address := api.SelectedMapList{
+		"192.168.1.100",
+	}
+	hw_address := api.SelectedMapList{
+		"00:11:22:33:44:55",
+	}
 	host := &Host{
-		IpAddress:   "192.168.1.100",
-		HwAddress:   "00:11:22:33:44:55",
+		IpAddress:   ip_address,
+		HwAddress:   hw_address,
 		Hostname:    "testhost",
 		Domain:      "testdomain",
 		Description: "Test static dhcp host entry",
@@ -48,10 +66,10 @@ func TestHost(t *testing.T) {
 		t.Fatalf("Failed to get static dhcp host: %v", err)
 	}
 	t.Logf("Retrieved static dhcp host: %+v", retrievedHost)
-	if retrievedHost.IpAddress != host.IpAddress {
-		t.Fatalf("Retrieved static dhcp host ip address does not match: got %s, want %s", retrievedHost.Hostname, host.Hostname)
+	if !sliceEqual(retrievedHost.IpAddress, host.IpAddress) {
+		t.Fatalf("Retrieved static dhcp host ip address does not match: got %s, want %s", retrievedHost.IpAddress, host.IpAddress)
 	}
-	if retrievedHost.HwAddress != host.HwAddress {
+	if !sliceEqual(retrievedHost.HwAddress, host.HwAddress) {
 		t.Fatalf("Retrieved static dhcp host hw address does not match: got %s, want %s", retrievedHost.HwAddress, host.HwAddress)
 	}
 	if retrievedHost.Hostname != host.Hostname {
@@ -64,8 +82,12 @@ func TestHost(t *testing.T) {
 		t.Fatalf("Retrieved static dhcp host description does not match: got %s, want %s", retrievedHost.Description, host.Description)
 	}
 
-	host.IpAddress = "192.168.1.200"
-	host.HwAddress = "66:77:88:99:AA:BB"
+	host.IpAddress = api.SelectedMapList{
+		"192.168.1.200",
+	}
+	host.HwAddress = api.SelectedMapList{
+		"66:77:88:99:AA:BB",
+	}
 	host.Hostname = "testhost-updated"
 	host.Domain = "testdomain.updated"
 	host.Description = "Test static dhcp host entry updated"
@@ -79,10 +101,10 @@ func TestHost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to get updated static dhcp host: %v", err)
 	}
-	if retrievedHost.IpAddress != host.IpAddress {
+	if !sliceEqual(retrievedHost.IpAddress, host.IpAddress) {
 		t.Fatalf("Retrieved static dhcp host ip address does not match updated ip address: got %s, want %s", retrievedHost.IpAddress, host.IpAddress)
 	}
-	if retrievedHost.HwAddress != host.HwAddress {
+	if !sliceEqual(retrievedHost.HwAddress, host.HwAddress) {
 		t.Fatalf("Retrieved static dhcp host hw address does not match updated hw address: got %s, want %s", retrievedHost.HwAddress, host.HwAddress)
 	}
 	if retrievedHost.Hostname != host.Hostname {
