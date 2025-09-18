@@ -66,8 +66,8 @@ func TestHost(t *testing.T) {
 
 	host.IpAddress = "192.168.1.200"
 	host.HwAddress = "66:77:88:99:AA:BB"
-	host.Hostname = "updatedhost"
-	host.Domain = "updateddomain"
+	host.Hostname = "testhost-updated"
+	host.Domain = "testdomain.updated"
 	host.Description = "Test static dhcp host entry updated"
 	err = controller.UpdateHost(ctx, key, host)
 	if err != nil {
